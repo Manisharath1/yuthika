@@ -1,4 +1,19 @@
 <x-guest-layout>
+
+   <div class="relative flex items-center justify-center bg-cover bg-center" style="background-image: url('{{ asset('images/yuthika-login.jpg') }}');">
+        <!-- Background Overlay for Opacity -->
+        <div class="absolute inset-0 bg-black opacity-50"></div>
+
+            <!-- Logo and Text Centered -->
+            <div class="relative z-10 text-center">
+                <!-- Logo -->
+                <img src="{{ asset('images/logo.png') }}" alt="Logo" class="mx-auto w-10 h-10 mt-4 mb-4">
+
+                <!-- Text (YUTHIKA) -->
+                <h1 class="text-white text-3xl font-bold mb-4">YUTHIKA</h1>
+        </div>
+    </div>
+
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
@@ -6,7 +21,7 @@
         @csrf
 
         <!-- Email Address -->
-        <div>
+        <div class="mt-4">
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
@@ -22,6 +37,17 @@
                             required autocomplete="current-password" />
 
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
+        </div>
+
+        <!-- Role Selection -->
+        <div class="mt-4">
+            <x-input-label for="role" :value="__('Login as')" />
+            <select id="role" name="role" class="block mt-1 w-full" required>
+                <option value="faculty">{{ __('Faculty') }}</option>
+                <option value="staff">{{ __('Staff') }}</option>
+                <option value="scholar">{{ __('Scholar') }}</option>
+                <option value="admin">{{ __('Admin') }}</option>
+            </select>
         </div>
 
         <!-- Remember Me -->
