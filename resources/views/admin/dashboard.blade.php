@@ -1,26 +1,23 @@
-<x-app-layout>
-    <!-- Main Container -->
-    <div class="flex min-h-screen">
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <!-- Sidebar Component -->
-        <x-sidebar />
+        <title>{{ config('app.name', 'Yuthika') }}</title>
 
-        <!-- Main Content Area -->
+        <!-- Fonts -->
+        <link rel="preconnect" href="https://fonts.bunny.net">
+        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-            <!-- Header -->
-            <x-slot name="header">
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    {{ __('Admin Dashboard') }}
-                </h2>
-            </x-slot>
-
-            <!-- Content Section -->
-            <div class="mt-4">
-                <h3 class="text-lg font-bold mb-4">Welcome to the Admin Dashboard!</h3>
-
-                <!-- Dashboard content can go here -->
-                <p>This is your dashboard content. Add any charts, statistics, or links as needed here.</p>
-            </div>
-        
-    </div>
-</x-app-layout>
+        <!-- Scripts -->
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    </head>
+    <body>
+        <x-app-layout>
+            <x-navbar/>
+            <x-sidebar/>
+        </x-app-layout>
+    </body>
+</html>
