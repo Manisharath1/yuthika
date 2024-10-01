@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ScholarController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -26,6 +27,12 @@ Route::get('/staff/dashboard', function () {
 Route::get('/admin/dashboard', function () {
     return view('admin.dashboard');
 })->middleware(['auth', 'verified', 'admin'])->name('admin.dashboard');
+
+//Scholar Page
+// Scholar page accessible only by admins
+Route::get('/scholar', [ScholarController::class, 'index'])->middleware(['auth', 'verified', 'admin'])->name('scholar');
+
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

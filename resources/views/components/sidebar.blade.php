@@ -43,7 +43,7 @@
             <!-- Dropdown Menu -->
             <div x-show="open" class="space-y-1 bg-gray-900 text-white pl-12" style="display: none;">
                 <!-- Project Staff Link -->
-                <a href="{{ route('dashboard') }}" class="flex items-center py-2 hover:bg-gray-700 transition-colors">
+                <a href="{{ route('scholar') }}" class="flex items-center py-2 hover:bg-gray-700 transition-colors">
                     <img src="{{ asset('icons/progress-report.png') }}"  class="h-5 w-5 mr-3">
                     Scholar / Project Staff
                 </a>
