@@ -41,6 +41,12 @@
 
         <!-- Role Selection -->
         <div class="mt-4">
+            @if ($errors->has('role'))
+                <div class="alert alert-danger" style="color: red; font-size: 12px;">
+                    {{ $errors->first('role') }}
+                </div>
+            @endif
+
             <x-input-label for="role" :value="__('Login as')" />
             <select id="role" name="role" class="block mt-1 w-full" required>
                 <option value="faculty">{{ __('Faculty') }}</option>

@@ -14,4 +14,17 @@
             </div>
         </div>
     </div>
+    <!-- Logout -->
+    <form method="POST" action="{{ route('logout') }}">
+        @csrf
+
+        <x-responsive-nav-link :href="route('logout')"
+                onclick="event.preventDefault();
+                            this.closest('form').submit();" class="flex items-center py-2 hover:bg-gray-700 transition-colors text-xl text-red-700">
+                             <img src="{{ asset('icons/shutdown.png') }}"  class="h-6 w-6 mr-4">
+            {{ __('Log Out') }}
+        </x-responsive-nav-link>
+    </form>
 </x-app-layout>
+
+

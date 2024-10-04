@@ -16,5 +16,6 @@
     </head>
     <body>
         @include('auth.login') <!-- This assumes your login view is stored in resources/views/auth/login.blade.php -->
+        {{-- @include('auth.register') <!-- This assumes your login view is stored in resources/views/auth/login.blade.php --> --}}
     </body>
 </html>
