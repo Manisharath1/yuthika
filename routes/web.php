@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ScholarController;
+use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -31,6 +32,10 @@ Route::get('/admin/dashboard', function () {
 //Scholar Page
 // Scholar page accessible only by admins
 Route::get('/scholar', [ScholarController::class, 'index'])->middleware(['auth', 'verified', 'admin'])->name('scholar');
+// Route for displaying the form to create a new student
+Route::get('/students/create', [StudentController::class, 'create'])->middleware(['auth', 'verified', 'admin'])->name('students.create');
+// Route for storing the new student
+Route::post('/students', [StudentController::class, 'store'])->middleware(['auth', 'verified', 'admin'])->name('students.store');
 
 
 

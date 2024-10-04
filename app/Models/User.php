@@ -16,6 +16,12 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
+     public function student()
+        {
+            return $this->hasOne(students::class); // One-to-One relationship
+        }
+
     protected $fillable = [
         'name',
         'email',

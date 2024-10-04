@@ -21,6 +21,12 @@ class students extends Model
     // Disable timestamps as the table doesn't have created_at and updated_at fields
     public $timestamps = false;
 
+    public function user()
+    {
+        return $this->belongsTo(User::class); // Student belongs to a user
+    }
+
+
     // Define fillable fields for mass assignment
     protected $fillable = [
         'student_id',
