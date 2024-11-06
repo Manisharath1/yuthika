@@ -69,7 +69,7 @@ class AuthenticatedSessionController extends Controller
             case 'faculty':
                 return redirect()->intended(route('faculty.dashboard', absolute: false));
             case 'scholar':
-                return redirect()->intended(route('scholar.dashboard', absolute: false));
+                return redirect()->intended(route('dashboard', absolute: false));
         }
     } else {
         // If the role doesn't match, log the user out and return an error

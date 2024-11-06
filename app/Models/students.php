@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class students extends Model
 {
@@ -26,19 +28,32 @@ class students extends Model
         return $this->belongsTo(User::class); // Student belongs to a user
     }
 
+    public function pi()
+    {
+        return $this->belongsTo(faculty::class, 'pi_id');
+    }
+
+    public function up()
+{
+    Schema::table('students', function (Blueprint $table) {
+        // Update pi_id and co_pi_id columns to be unsigned integers and nullable
+        $table->unsignedBigInteger('pi_id')->nullable()->change();
+        $table->unsignedBigInteger('co_pi_id')->nullable()->change();
+    });
+}
+
 
     // Define fillable fields for mass assignment
     protected $fillable = [
+        'user_id',
         'student_id',
         'name',
         'username',
-        'email',
         'password',
-        'filename',
-        'photo',
-        'correspondence',
-        'document',
+        'type',
+        'category',
         'designation',
+        'email',
         'phone',
         'sex',
         'dob',
@@ -55,9 +70,6 @@ class students extends Model
         'joining_date',
         'tenure_upto',
         'SRF_wef',
-        'leave_alloted',
-        'cl_count',
-        'leave_utilised',
         'document_link',
         'no_of_publication',
         'no_of_conf_attended',
@@ -73,8 +85,14 @@ class students extends Model
         'award_date',
         'thesis_availability',
         'completion_date',
+        'photo',
+        'correspondence',
+        'document',
+        'filename',
+        'leave_alloted',
+        'cl_count',
+        'leave_utilised',
         'display_fund',
-        'type',
         'redg_no',
         'date_of_registration',
         'academic_year',
@@ -160,7 +178,6 @@ class students extends Model
         'Oseuc5',
         'archive_flag',
         'final_archive_flag',
-        'category',
         'lab_manage_flag',
         'data_compiler',
         'cab_report_flag',

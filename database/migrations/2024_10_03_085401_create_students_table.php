@@ -24,19 +24,19 @@ return new class extends Migration
             $table->string('designation', 50)->nullable(); // Designation
             $table->string('phone', 50)->nullable(); // Phone number
             $table->string('sex', 10)->nullable(); // Gender
-            $table->string('dob', 20)->nullable(); // Date of birth
+            $table->date('dob')->nullable(); // Date of birth
             $table->string('caste', 100)->nullable(); // Caste
             $table->string('perm_address', 450)->nullable(); // Permanent address
             $table->string('res_address', 450)->nullable(); // Residential address
-            $table->string('hostel_joined_on', 100)->nullable(); // Hostel joined date
-            $table->string('hostel_vaccated_on', 100)->nullable(); // Hostel vacated date
+            $table->date('hostel_joined_on')->nullable(); // Hostel joined date
+            $table->date('hostel_vaccated_on')->nullable(); // Hostel vacated date
             $table->string('caution_money', 100)->nullable(); // Caution money
             $table->string('funding_agency', 500)->nullable(); // Funding agency
             $table->string('ILS_ID_no', 20)->nullable(); // ILS ID number
             $table->string('emergency_contact_no', 15)->nullable(); // Emergency contact number
             $table->string('student_file_no', 100)->nullable(); // Student file number
-            $table->string('joining_date', 50)->nullable(); // Joining date
-            $table->string('tenure_upto', 20)->nullable(); // Tenure up to
+            $table->date('joining_date')->nullable(); // Joining date
+            $table->date('tenure_upto')->nullable(); // Tenure up to
             $table->string('SRF_wef', 100)->nullable(); // SRF with effect from
             $table->float('leave_alloted', 8, 2)->default(30); // Leave allotted
             $table->float('cl_count', 8, 2)->default(0); // Casual leave count

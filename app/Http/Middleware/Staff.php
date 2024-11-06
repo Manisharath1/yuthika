@@ -27,7 +27,7 @@ class Staff
     if($userRole == 2){                   //Staff
         return $next($request);
     }
-    elseif($userRole == 1){               //Admin   
+    elseif($userRole == 1){               //Admin
         return redirect()->route('admin.dashboard');
     }
     elseif($userRole == 3){               //Faculty

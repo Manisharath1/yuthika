@@ -37,4 +37,6 @@ class Admin
             return redirect()->route('dashboard');
         }
     }
+
+
 }

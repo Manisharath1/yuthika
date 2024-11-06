@@ -71,7 +71,7 @@
             <!-- Dropdown Menu -->
             <div x-show="open" class="space-y-1 bg-gray-900 text-white pl-12" style="display: none;">
                 <!--  Manage Scholar -->
-                <a href="{{ route('scholar') }}" class="flex items-center py-2 hover:bg-gray-700 transition-colors">
+                <a href="{{ route('scholar.index') }}" class="flex items-center py-2 hover:bg-gray-700 transition-colors">
                     <img src="{{ asset('icons/ManageScholar.png') }}"  class="h-6 w-6   mr-3">
                     Manage Scholar
                 </a>
