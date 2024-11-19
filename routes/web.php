@@ -32,10 +32,16 @@ Route::get('/admin/dashboard', function () {
 // Scholar page accessible only by admins
 
 Route::get('/scholar/index', [ScholarController::class, 'index'])->middleware(['auth', 'verified', 'admin'])->name('scholar.index');
+
 Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/scholar/{id}/edit', [ScholarController::class, 'edit'])->name('scholar.edit');
+
+    Route::put('/students/{id}', [ScholarController::class, 'update']);
     Route::post('/scholar/create', [ScholarController::class, 'create'])->name('scholar.create');
+    Route::get('/students/{id}', [ScholarController::class, 'show']);
+
+
 });
+Route::get('/scholar/personal', [ScholarController::class, 'personal'])->middleware(['auth', 'verified', 'admin'])->name('scholar.personal');
 
 
 

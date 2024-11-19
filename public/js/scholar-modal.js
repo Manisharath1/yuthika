@@ -4,6 +4,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const openModalBtn = document.querySelector('.add-scholar-btn');
     const closeModalBtns = document.querySelectorAll('.close-modal');
     const form = document.getElementById('addScholarForm');
+     // Check if form exists
+     if (!form) {
+        console.error('Form with ID "addScholarForm" not found.');
+        return; // Exit if form is null
+    }
+
     const submitBtn = form.querySelector('button[type="submit"]');
 
     // Open modal
@@ -66,94 +72,94 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
         // Form submission handling
-    // form.addEventListener('submit', async function(e) {
-    //     e.preventDefault();
-    //     clearFormErrors();
+        form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        clearFormErrors();
 
-    //     // Disable submit button and show loading state
-    //     submitBtn.disabled = true;
-    //     submitBtn.innerHTML = `
-    //         <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-    //             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-    //             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-    //         </svg>
-    //         Saving...
-    //     `;
+        // Disable submit button and show loading state
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `
+            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            Saving...
+        `;
 
-    //     try {
-    //         const formData = new FormData(form);
+        try {
+            const formData = new FormData(form);
 
-    //         const response = await fetch(form.action, {
-    //             method: 'POST',
-    //             body: formData,
-    //             headers: {
-    //                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-    //                 'Accept': 'application/json'
-    //             },
-    //             credentials: 'same-origin'
-    //         });
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json'
+                },
+                credentials: 'same-origin'
+            });
 
-    //         // First check if the response can be parsed as JSON
-    //         let data;
-    //         const contentType = response.headers.get('content-type');
-    //         if (contentType && contentType.includes('application/json')) {
-    //             data = await response.json();
-    //         } else {
-    //             // If not JSON, get the text and log it for debugging
-    //             const text = await response.text();
-    //             console.error('Received non-JSON response:', text);
-    //             throw new Error('Server returned non-JSON response');
-    //         }
+            // First check if the response can be parsed as JSON
+            let data;
+            const contentType = response.headers.get('content-type');
+            if (contentType && contentType.includes('application/json')) {
+                data = await response.json();
+            } else {
+                // If not JSON, get the text and log it for debugging
+                const text = await response.text();
+                console.error('Received non-JSON response:', text);
+                throw new Error('Server returned non-JSON response');
+            }
 
-    //         if (!response.ok) {
-    //             // Handle validation errors
-    //             if (response.status === 422 && data.errors) {
-    //                 showErrors(data.errors);
-    //                 throw new Error('Validation failed');
-    //             }
-    //             throw new Error(data.message || 'An error occurred');
-    //         }
+            if (!response.ok) {
+                // Handle validation errors
+                if (response.status === 422 && data.errors) {
+                    showErrors(data.errors);
+                    throw new Error('Validation failed');
+                }
+                throw new Error(data.message || 'An error occurred');
+            }
 
-    //         // Show success message
-    //         const successAlert = document.createElement('div');
-    //         successAlert.className = 'fixed top-4 right-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded';
-    //         successAlert.role = 'alert';
-    //         successAlert.innerHTML = `
-    //             <strong class="font-bold">Success!</strong>
-    //             <span class="block sm:inline"> ${data.message}</span>
-    //         `;
-    //         document.body.appendChild(successAlert);
+            // Show success message
+            const successAlert = document.createElement('div');
+            successAlert.className = 'fixed top-4 right-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded';
+            successAlert.role = 'alert';
+            successAlert.innerHTML = `
+                <strong class="font-bold">Success!</strong>
+                <span class="block sm:inline"> ${data.message}</span>
+            `;
+            document.body.appendChild(successAlert);
 
-    //         // Remove success message after 3 seconds
-    //         setTimeout(() => {
-    //             successAlert.remove();
-    //         }, 3000);
+            // Remove success message after 3 seconds
+            setTimeout(() => {
+                successAlert.remove();
+            }, 3000);
 
-    //         // Close modal and refresh table
-    //         closeModal();
-    //         window.location.reload();
+            // Close modal and refresh table
+            closeModal();
+            window.location.reload();
 
-    //     } catch (error) {
-    //         console.error('Error:', error);
+        } catch (error) {
+            console.error('Error:', error);
 
-    //         // Show error message
-    //         const errorAlert = document.createElement('div');
-    //         errorAlert.className = 'fixed top-4 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded';
-    //         errorAlert.role = 'alert';
-    //         errorAlert.innerHTML = `
-    //             <strong class="font-bold">Error!</strong>
-    //             <span class="block sm:inline"> ${error.message}</span>
-    //         `;
-    //         document.body.appendChild(errorAlert);
+            // Show error message
+            const errorAlert = document.createElement('div');
+            errorAlert.className = 'fixed top-4 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded';
+            errorAlert.role = 'alert';
+            errorAlert.innerHTML = `
+                <strong class="font-bold">Error!</strong>
+                <span class="block sm:inline"> ${error.message}</span>
+            `;
+            document.body.appendChild(errorAlert);
 
-    //         // Remove error message after 5 seconds
-    //         setTimeout(() => {
-    //             errorAlert.remove();
-    //         }, 5000);
-    //     } finally {
-    //         // Re-enable submit button and restore original text
-    //         submitBtn.disabled = false;
-    //         submitBtn.innerHTML = 'Save Scholar';
-    //     }
-    // });
+            // Remove error message after 5 seconds
+            setTimeout(() => {
+                errorAlert.remove();
+            }, 5000);
+        } finally {
+            // Re-enable submit button and restore original text
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = 'Save Scholar';
+        }
+    });
 });

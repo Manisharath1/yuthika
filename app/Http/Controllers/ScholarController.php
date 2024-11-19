@@ -7,8 +7,10 @@ use App\Models\User;
 
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Str;
 
 class ScholarController extends Controller
@@ -49,7 +51,7 @@ class ScholarController extends Controller
                 'hostel_joined_on' => 'nullable|date',
                 'hostel_vaccated_on' => 'nullable|date',
                 'caution_money' => 'nullable|numeric',
-                'funding' => 'nullable|string|max:255',
+                'funding_agency' => 'nullable|string|max:255',
                 'ILS_ID_no' => 'nullable|string|max:255',
                 'emergency_contact_no' => 'nullable|string|max:20',
                 'student_file_no' => 'nullable|string|max:255',
@@ -58,7 +60,7 @@ class ScholarController extends Controller
                 'SRF_wef' => 'nullable|date',
                 'document_link' => 'nullable|url',
                 'no_of_publication' => 'nullable|integer|min:0',
-                'no_conf_attended' => 'nullable|integer|min:0',
+                'no_of_conf_attended' => 'nullable|integer|min:0',
                 'per_email' => 'nullable|email|max:255',
                 'fellowship' => 'nullable|string|max:255',
                 'pi_id' => 'nullable|integer', // Changed to integer
@@ -145,4 +147,79 @@ class ScholarController extends Controller
             ], 500);
         }
     }
+
+    public function personal(Request $request)
+    {
+        try {
+            $scholars = students::orderBy('name')->paginate(10);
+            return view('scholar.personal', compact('scholars'));
+        } catch (\Exception $e) {
+            Log::error('Error fetching scholars: ' . $e->getMessage());
+            return back()->with('error', 'Unable to fetch scholar data.');
+        }
+    }
+
+    public function show($id)
+{
+    try {
+        $scholars = students::find($id);
+
+        if (!$scholars) {
+            return response()->json(['success' => false, 'message' => 'Student not found'], 404);
+        }
+
+        return response()->json($scholars);
+    } catch (\Exception $e) {
+        Log::error('Error fetching student data: ' . $e->getMessage());
+
+        return response()->json(['success' => false, 'message' => 'Error fetching data.'], 500);
+    }
+}
+
+
+   // Method to update student data
+   public function update(Request $request, $id)
+{
+    try {
+        $scholars = students::find($id);
+
+        if (!$scholars) {
+            return response()->json(['success' => false, 'message' => 'Student not found'], 404);
+        }
+
+
+
+        for ($i = 1; $i <= 5; $i++) {
+            $fdfrKey = "Fdfr{$i}";
+            $fexpKey = "Fexp{$i}";
+            $fseucKey = "Fseuc{$i}";
+            $cdfrKey = "Cdfr{$i}";
+            $cexpKey = "Cexp{$i}";
+            $cseucKey = "Cseuc{$i}";
+            $odfrKey = "Odfr{$i}";
+            $oexpKey = "Oexp{$i}";
+            $oseucKey = "Oseuc{$i}";
+
+            $scholars->$fdfrKey = $request->input($fdfrKey);
+            $scholars->$fexpKey = $request->input($fexpKey);
+            $scholars->$fseucKey = $request->input($fseucKey);
+            $scholars->$cdfrKey = $request->input($cdfrKey);
+            $scholars->$cexpKey = $request->input($cexpKey);
+            $scholars->$cseucKey = $request->input($cseucKey);
+            $scholars->$odfrKey = $request->input($odfrKey);
+            $scholars->$oexpKey = $request->input($oexpKey);
+            $scholars->$oseucKey = $request->input($oseucKey);
+        }
+
+        $scholars->save();
+        return response()->json(['success' => true, 'message' => 'Student updated successfully']);
+    } catch (\Exception $e) {
+        // Log the error message for debugging
+        Log::error('Error updating student: ' . $e->getMessage());
+
+        return response()->json(['success' => false, 'message' => 'Error: Unable to update data.'], 500);
+    }
+}
+
+
 }

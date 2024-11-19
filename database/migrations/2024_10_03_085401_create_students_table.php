@@ -105,7 +105,6 @@ return new class extends Migration
             $table->decimal('Odfr1', 12, 2)->nullable(); // Other details 1
             $table->decimal('Oexp1', 12, 2)->nullable(); // Other expenditure 1
             $table->string('Oseuc1', 100)->nullable(); // Other security 1
-            // Additional fields continue...
 
             $table->enum('archive_flag', ['0', '1'])->default('0'); // Archive flag
             $table->enum('final_archive_flag', ['0', '1'])->default('0'); // Final archive flag
