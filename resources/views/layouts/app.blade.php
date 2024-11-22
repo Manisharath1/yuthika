@@ -14,7 +14,8 @@
         <!-- Scripts -->
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-        <script src="{{ asset('js/scholar-modal.js') }}"></script>
+        {{-- <script src="{{ asset('js/scholar-modal.js') }}"></script>
+        <script src="{{ asset('js/faculty-modal.js') }}"></script> --}}
 
     </head>
     <body class="font-sans antialiased">

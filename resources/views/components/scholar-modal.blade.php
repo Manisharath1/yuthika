@@ -18,7 +18,7 @@
 
                 <div class="text-xl font-semibold mb-6 text-gray-700">Add Scholar</div>
 
-                <form id="addScholarForm" action="{{ route('scholar.create') }}" method="POST" class="space-y-4">
+                <form id="addScholarForm" action="{{ route('scholar.index') }}" method="POST" class="space-y-4">
                     @csrf
                     <div class=" grid grid-cols-2 gap-4">
                         <!-- Existing fields -->

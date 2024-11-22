@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ScholarController;
+use App\Http\Controllers\StaffController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -28,20 +30,31 @@ Route::get('/admin/dashboard', function () {
     return view('admin.dashboard');
 })->middleware(['auth', 'verified', 'admin'])->name('admin.dashboard');
 
-//Scholar Page
+
 // Scholar page accessible only by admins
 
 Route::get('/scholar/index', [ScholarController::class, 'index'])->middleware(['auth', 'verified', 'admin'])->name('scholar.index');
-
+Route::get('/scholar/personal', [ScholarController::class, 'personal'])->middleware(['auth', 'verified', 'admin'])->name('scholar.personal');
 Route::middleware(['auth', 'admin'])->group(function () {
-
+    //scholar
     Route::put('/students/{id}', [ScholarController::class, 'update']);
-    Route::post('/scholar/create', [ScholarController::class, 'create'])->name('scholar.create');
+    Route::post('/scholar/index', [ScholarController::class, 'create']);
     Route::get('/students/{id}', [ScholarController::class, 'show']);
 
-
 });
-Route::get('/scholar/personal', [ScholarController::class, 'personal'])->middleware(['auth', 'verified', 'admin'])->name('scholar.personal');
+
+//Staff
+Route::get('/staff/index', [StaffController::class, 'index'])->middleware(['auth', 'verified', 'admin'])->name('staff.index');
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::post('/staff/index', [StaffController::class, 'create']);
+});
+
+//faculty
+Route::get('/faculty/index', [FacultyController::class, 'index'])->middleware(['auth', 'verified', 'admin'])->name('faculty.index');
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::post('/faculty/index', [FacultyController::class, 'create']);
+});
+
 
 
 

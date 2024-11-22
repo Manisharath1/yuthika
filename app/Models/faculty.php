@@ -22,8 +22,10 @@ class faculty extends Model
 
     // Define fillable fields for mass assignment
     protected $fillable = [
+        'user_id',
         'faculty_id',
         'fac_name',
+        'email',
         'fac_name2',
         'photo',
         'service_book',
@@ -68,4 +70,9 @@ class faculty extends Model
         'can_evaluate',
         'consumable_manager_flag',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id'); // 'user_id' is the foreign key
+    }
 }

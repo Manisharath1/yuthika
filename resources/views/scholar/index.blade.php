@@ -274,7 +274,7 @@
             });
         });
         </script>
-
+        <script src="{{ asset('js/scholar-modal.js') }}"></script>
         @endpush
     </x-app-layout>
 

@@ -92,6 +92,35 @@
                     Manage RCB
                 </a>
             </div>
+        </div>
+        <div x-data="{ open: false }">
+            <!-- Monthly Progress Report (Main Menu Item) -->
+            <a @click.prevent="open = !open" href="#" class="flex items-center justify-between p-4 text-white hover:bg-gray-700 transition-colors cursor-pointer">
+                <div class="flex items-center">
+                    <img src="{{ asset('icons/scholar.png') }}" class="h-6 w-6">
+                    <span class="ml-4">Staff/Faculty</span>
+                </div>
+                <!-- Dropdown Icon (chevron) -->
+                <svg class="w-4 h-4 transform transition-transform" :class="{ 'rotate-180': open }" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </a>
+
+            <!-- Dropdown Menu -->
+            <div x-show="open" class="space-y-1 bg-gray-900 text-white pl-12" style="display: none;">
+                <!--  Manage Scholar -->
+                <a href="{{ route('faculty.index') }}" class="flex items-center py-2 hover:bg-gray-700 transition-colors">
+                    <img src="{{ asset('icons/ManageScholar.png') }}"  class="h-6 w-6   mr-3">
+                    Manage Faculty
+                </a>
+
+                <!--  Manage Scholar Data-->
+                <a href="{{ route('staff.index') }}" class="flex items-center py-2 hover:bg-gray-700 transition-colors">
+                    <img src="{{ asset('icons/personal-data.png') }}"  class="h-6 w-6   mr-3">
+                    Manage Staff
+                </a>
+            </div>
+        </div>
 
             <!-- Manage Projects -->
             <a href="{{ route('dashboard') }}" class="flex items-center p-4 text-white hover:bg-gray-700 transition-colors">
@@ -111,7 +140,7 @@
                 <span class="ml-4">User Log</span>
             </a>
 
-        </div>
+
 
         <!-- Logout -->
         <form method="POST" action="{{ route('logout') }}">
