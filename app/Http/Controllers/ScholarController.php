@@ -22,8 +22,10 @@ class ScholarController extends Controller
      */
     public function index()
     {
-        $scholars = students::all();
+        $scholars = students::with(['pi', 'coPi'])->get();
         return view('scholar.index', compact('scholars'));
+
+
     }
 
 
@@ -147,6 +149,13 @@ class ScholarController extends Controller
             ], 500);
         }
     }
+
+    public function getRoleTwoUsers()
+    {
+        $roleTwoUsers = User::where('role', 2)->select('id', 'name')->get();
+        return response()->json($roleTwoUsers);
+    }
+
 
     public function personal(Request $request)
     {

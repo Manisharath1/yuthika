@@ -42,19 +42,23 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/students/{id}', [ScholarController::class, 'show']);
 
 });
+Route::get('/get-role-two-users', [ScholarController::class, 'getRoleTwoUsers'])->name('get.role.two.users');
+
 
 //Staff
 Route::get('/staff/index', [StaffController::class, 'index'])->middleware(['auth', 'verified', 'admin'])->name('staff.index');
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/staff/index', [StaffController::class, 'create']);
 });
+Route::get('/staff/{id}/edit', [StaffController::class, 'edit'])->name('staff.edit');
+Route::put('/staff/{id}', [StaffController::class, 'update'])->name('staff.update');
+
 
 //faculty
 Route::get('/faculty/index', [FacultyController::class, 'index'])->middleware(['auth', 'verified', 'admin'])->name('faculty.index');
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/faculty/index', [FacultyController::class, 'create']);
 });
-
 
 
 

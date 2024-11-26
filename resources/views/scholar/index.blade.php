@@ -115,12 +115,12 @@
                                 @foreach($scholars as $scholar)
                                 <tr class="hover:bg-gray-50">
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <button class="text-blue-600 hover:text-blue-900">
+                                        <bu class="text-blue-600 hover:text-blue-900">
                                             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                                             </svg>
-                                        </button>
+                                        </bu tton>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $scholar->name }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $scholar->type }}</td>
@@ -148,8 +148,8 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $scholar->no_of_conf_attended }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $scholar->per_email }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $scholar->fellowship }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $scholar->pi_id }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $scholar->co_pi_id }}</td>
+                                    <td>{{ $scholar->pi ? $scholar->pi->name : 'N/A' }}</td>
+                                    <td>{{ $scholar->coPi ? $scholar->coPi->name : 'N/A' }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $scholar->registration_no }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $scholar->registration_date }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $scholar->topic }}</td>
@@ -275,6 +275,7 @@
         });
         </script>
         <script src="{{ asset('js/scholar-modal.js') }}"></script>
+
         @endpush
     </x-app-layout>
 

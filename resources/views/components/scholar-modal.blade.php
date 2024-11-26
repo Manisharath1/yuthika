@@ -192,14 +192,18 @@
 
                         <div>
                             <label class="block text-sm font-medium text-gray-700">PI</label>
-                            <input type="text" name="pi_id" required
-                                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <select name="pi_id" id="piDropdown" required
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                <option value="">Loading...</option>
+                            </select>
                         </div>
 
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Co PI</label>
-                            <input type="text" name="co_pi_id"
-                                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <select name="co_pi_id" id="coPiDropdown"
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                <option value="">Loading...</option>
+                            </select>
                         </div>
 
                         <div>
@@ -282,3 +286,26 @@
         </div>
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Fetch users for PI and Co-PI dropdowns
+        fetch('{{ route("get.role.two.users") }}')
+            .then(response => response.json())
+            .then(users => {
+                const piDropdown = document.getElementById('piDropdown');
+                const coPiDropdown = document.getElementById('coPiDropdown');
+
+                // Clear existing options
+                piDropdown.innerHTML = '<option value="">Select PI</option>';
+                coPiDropdown.innerHTML = '<option value="">Select Co-PI</option>';
+
+                // Populate dropdowns with fetched users
+                users.forEach(user => {
+                    const option = `<option value="${user.id}">${user.name}</option>`;
+                    piDropdown.innerHTML += option;
+                    coPiDropdown.innerHTML += option;
+                });
+            })
+            .catch(error => console.error('Error fetching users:', error));
+    });
+</script>

@@ -124,7 +124,7 @@
                                     </button>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 name">{{ $scholar->name }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 pi_id">{{ $scholar->pi_id }}</td>
+                                <td>{{ $scholar->pi ? $scholar->pi->name : 'N/A' }}</td>
                                 @for ($i = 1; $i <= 5; $i++)
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 Fdfr{{ $i }}">{{ $scholar["Fdfr{$i}"] }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 Fexp{{ $i }}">{{ $scholar["Fexp{$i}"] }}</td>
@@ -227,7 +227,7 @@
         function openEditModal(studentId) {
             // Show the modal
             document.getElementById('editModal').classList.remove('hidden');
-    
+
             // Fetch student data
             fetch(`/students/${studentId}`)
                 .then(response => {
@@ -241,7 +241,7 @@
                     document.getElementById('scholar_id').value = studentId;
                     document.getElementById('edit_name').value = data.name || '';
                     document.getElementById('edit_pi_id').value = data.pi_id || '';
-    
+
                     // Populate other fields for each set
                     for (let i = 1; i <= 5; i++) {
                         document.getElementById(`edit_Fdfr${i}`).value = data[`Fdfr${i}`] || '';
@@ -260,21 +260,21 @@
                     alert('Error: Unable to fetch student data.');
                 });
         }
-    
+
         // Function to close the modal and reset the form
         function closeModal() {
             document.getElementById('editModal').classList.add('hidden');
             const form = document.getElementById('editScholarForm');
             form.reset(); // Reset form fields
         }
-    
+
         // Event listener for form submission
         document.getElementById('editScholarForm').addEventListener('submit', function(event) {
             event.preventDefault(); // Prevent form default submission
-    
+
             const studentId = document.getElementById('scholar_id').value;
             const formData = new FormData(this);
-    
+
             fetch(`/students/${studentId}`, {
                 method: 'PUT',
                 headers: {
@@ -287,13 +287,13 @@
                 if (!response.ok) {
                     return response.text().then(text => { throw new Error(`Error: ${text}`); });
                 }
-    
+
                 // Parse JSON response
                 const contentType = response.headers.get("content-type");
                 if (!contentType || !contentType.includes("application/json")) {
                     return response.text().then(text => { throw new Error("Invalid JSON response: " + text); });
                 }
-    
+
                 return response.json();
             })
             .then(data => {
@@ -311,5 +311,5 @@
             });
         });
     </script>
-    
+
 </x-app-layout>

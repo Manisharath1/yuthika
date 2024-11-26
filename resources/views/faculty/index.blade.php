@@ -21,7 +21,7 @@
                                 <option value="Pay Level">Pay Level</option>
                                 <option value="Basic Pay">Basic Pay</option>
                                 <option value="Position Held">Position Held</option>
-                                
+
                             </select>
                         </div>
                         <div class="flex items-center">
@@ -70,10 +70,6 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $faculty->pay_level }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $faculty->basic_pay }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $faculty->position_held }}</td>
-                                {{-- <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                    <img src="{{ $faculty->photo }}" alt="Photo" class="h-10 w-10 rounded-full">
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><a href="{{ $faculty->service_book }}" target="_blank">Service Book</a></td> --}}
                             </tr>
                             @endforeach
                         </tbody>
@@ -184,6 +180,6 @@
             });
         });
         </script>
-        @endpush
         <script src="{{ asset('js/faculty-modal.js') }}"></script>
+        @endpush
 </x-app-layout>

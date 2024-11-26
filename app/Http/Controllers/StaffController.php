@@ -110,5 +110,18 @@ class StaffController extends Controller
         }
     }
 
+    public function edit($id)
+    {
+        $staffs = faculty::findOrFail($id);
+        return response()->json($staffs);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $staffs = faculty::findOrFail($id);
+        $staffs->update($request->all());
+        return response()->json(['message' => 'Staff updated successfully.']);
+    }
+
 
 }

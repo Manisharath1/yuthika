@@ -53,10 +53,9 @@
                             @foreach($staffs as $staff)
                             <tr class="hover:bg-gray-50">
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <button class="text-blue-600 hover:text-blue-900">
+                                    <button class="text-blue-600 hover:text-blue-900 edit-staff-btn" data-id="{{ $staff->faculty_id }}" title="Edit Staff">
                                         <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                                         </svg>
                                     </button>
                                 </td>
@@ -69,10 +68,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $staff->pay_level }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $staff->basic_pay }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $staff->position_held }}</td>
-                                {{-- <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                    <img src="{{ $staff->photo }}" alt="Photo" class="h-10 w-10 rounded-full">
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><a href="{{ $staff->service_book }}" target="_blank">Service Book</a></td> --}}
+
                             </tr>
                             @endforeach
                         </tbody>
@@ -81,6 +77,7 @@
             </div>
         </div>
     </div>
+
     @push('scripts')
         <script>
             document.addEventListener('DOMContentLoaded', function() {
@@ -183,6 +180,8 @@
             });
         });
         </script>
-        @endpush
         <script src="{{ asset('js/staff-modal.js') }}"></script>
+        <script src="{{ asset('js/edit-staff.js') }}"></script>
+    @endpush
+
 </x-app-layout>

@@ -30,17 +30,21 @@ class students extends Model
 
     public function pi()
     {
-        return $this->belongsTo(faculty::class, 'pi_id');
+        return $this->belongsTo(User::class, 'pi_id');
     }
 
+    public function coPi()
+    {
+        return $this->belongsTo(User::class, 'co_pi_id');
+    }
     public function up()
-{
-    Schema::table('students', function (Blueprint $table) {
-        // Update pi_id and co_pi_id columns to be unsigned integers and nullable
-        $table->unsignedBigInteger('pi_id')->nullable()->change();
-        $table->unsignedBigInteger('co_pi_id')->nullable()->change();
-    });
-}
+    {
+        Schema::table('students', function (Blueprint $table) {
+            // Update pi_id and co_pi_id columns to be unsigned integers and nullable
+            $table->unsignedBigInteger('pi_id')->nullable()->change();
+            $table->unsignedBigInteger('co_pi_id')->nullable()->change();
+        });
+    }
 
 
     // Define fillable fields for mass assignment
@@ -182,4 +186,6 @@ class students extends Model
         'data_compiler',
         'cab_report_flag',
     ];
+
+
 }
