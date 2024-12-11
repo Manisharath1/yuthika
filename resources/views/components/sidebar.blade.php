@@ -2,7 +2,7 @@
 <div x-data="{ isSidebarOpen: false }" class="relative">
     <!-- Mobile Menu Button -->
     <button @click="isSidebarOpen = !isSidebarOpen"
-            class="md:hidden fixed top-4 left-4 z-40 p-2 rounded-md bg-gray-800 text-white hover:bg-gray-700">
+            class="md:hidden fixed top-4 left-2 z-40 p-2 rounded-md bg-gray-800 text-white hover:bg-gray-700">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path x-show="!isSidebarOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
             <path x-show="isSidebarOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -40,7 +40,7 @@
                         class="w-full flex items-center justify-between p-3 text-gray-100 hover:bg-gray-700 rounded-lg transition-colors">
                     <div class="flex items-center">
                         <img src="{{ asset('icons/analysis.png') }}" alt="Analysis" class="h-6 w-6">
-                        <span class="ml-4 font-medium">Monthly Progress Report</span>
+                        <span class="ml-4">Monthly Progress Report</span>
                     </div>
                     <svg class="w-4 h-4 transform transition-transform" :class="{ 'rotate-180': isOpen }" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
