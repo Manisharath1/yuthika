@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
+
 class FacultyController extends Controller
 {
     public function index()
@@ -108,6 +110,58 @@ class FacultyController extends Controller
             ], 500);
         }
     }
+
+
+    public function edit($id)
+    {
+        $staffs = faculty::findOrFail($id);
+        return response()->json($staffs);
+    }
+
+    public function update(Request $request, $id)
+    {
+        Log::info('Update Request Data:', $request->all());
+
+        try {
+            $validatedData = $request->validate([
+                'fac_name' => 'required|string|max:255',
+                'email' => 'required|email|max:255',
+                'designation' => 'nullable|string|max:255',
+                'empid' => 'nullable|string|max:255',
+                'EPF_PPRN_No' => 'nullable|string|max:255',
+                'ltc_availed' => 'nullable|string|max:255',
+                'pay_level' => 'nullable|string|max:255',
+                'basic_pay' => 'nullable|string|max:255',
+                'position_held' => 'nullable|string|max:255',
+            ]);
+
+            $staffs = faculty::findOrFail($id);
+            $staffs->update($validatedData);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Staff updated successfully.',
+                'staff' => $staffs
+            ]);
+
+        } catch (ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors' => $e->errors()
+            ], 422);
+
+        } catch (\Exception $e) {
+            Log::error('Staff update error: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Error updating staff.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+
 
 
 

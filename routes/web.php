@@ -50,8 +50,8 @@ Route::get('/staff/index', [StaffController::class, 'index'])->middleware(['auth
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/staff/index', [StaffController::class, 'create']);
 });
-Route::get('/staff/{id}/edit', [StaffController::class, 'edit'])->name('staff.edit');
-Route::put('/staff/{id}', [StaffController::class, 'update'])->name('staff.update');
+Route::get('/staff/{id}/edit', [StaffController::class, 'edit']);
+Route::put('/staff/{id}', [StaffController::class, 'update']);
 
 
 //faculty

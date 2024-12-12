@@ -1,32 +1,30 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Fetching the modal and form elements
-    const editModal = document.getElementById('staff-edit-modal');
+document.addEventListener('DOMContentLoaded', function () {
+    const editModal = document.getElementById('edit-staff-modal');
     const editForm = document.getElementById('edit-staff-form');
-    const closeButton = document.querySelector('#staff-edit-modal button[onclick="closeEditModal()"]');
+    const closeEditModal = document.getElementById('close-edit-modal');
+    const cancelEditModal = document.getElementById('cancel-edit-modal');
 
-    // Function to close the modal
-    function closeEditModal() {
-        editModal.classList.add('hidden');
-    }
-
-    // Attach close functionality
-    closeButton.addEventListener('click', closeEditModal);
-
-    // Open the modal and fetch staff data for editing
+    // Open modal and populate data
     document.querySelectorAll('.edit-staff-btn').forEach(button => {
-        button.addEventListener('click', function() {
-            const staffId = this.dataset.id; // Get staff ID from button data attribute
+        button.addEventListener('click', function () {
+            const staffId = this.dataset.id;
 
-            // Fetch staff data via AJAX
+            if (!staffId) {
+                console.error("Staff ID is undefined. Check the data-id attribute on the button.");
+                alert("Error: Unable to find the staff ID.");
+                return;
+            }
+
+            console.log("Editing staff with ID:", staffId);
+
+            // Fetch data using AJAX
             fetch(`/staff/${staffId}/edit`)
                 .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Failed to fetch staff data');
-                    }
+                    if (!response.ok) throw new Error('Failed to fetch staff data');
                     return response.json();
                 })
                 .then(data => {
-                    // Populate the form fields with fetched data
+                    // Populate modal fields
                     document.getElementById('edit_fac_name').value = data.fac_name || '';
                     document.getElementById('edit_email').value = data.email || '';
                     document.getElementById('edit_designation').value = data.designation || '';
@@ -36,49 +34,62 @@ document.addEventListener('DOMContentLoaded', function() {
                     document.getElementById('edit_pay_level').value = data.pay_level || '';
                     document.getElementById('edit_basic_pay').value = data.basic_pay || '';
                     document.getElementById('edit_position_held').value = data.position_held || '';
-
-                    // Set the form action to the appropriate update route
-                    editForm.action = `/staff/${staffId}`;
-                    document.getElementById('staff-edit-modal').classList.remove('hidden');
-
-                    // Show the modal
+                    // Set the form action dynamically
+                    editForm.dataset.id = staffId;
                     editModal.classList.remove('hidden');
                 })
                 .catch(error => {
-                    console.error('Error fetching staff data:', error);
-                    alert('Failed to load staff data. Please try again.');
+                    console.error("Error fetching staff data:", error);
+                    alert('Error fetching staff details.');
                 });
         });
     });
 
-    // Handle form submission for updating staff details
-    editForm.addEventListener('submit', function(e) {
-        e.preventDefault(); // Prevent default form submission
+    // Close modal
+    [closeEditModal, cancelEditModal].forEach(button => {
+        button.addEventListener('click', () => {
+            editModal.classList.add('hidden');
+        });
+    });
 
-        const formData = new FormData(editForm);
+    // Handle form submission
+    editForm.addEventListener('submit', function (event) {
+        event.preventDefault();
 
-        // Send the PUT request via AJAX
-        fetch(editForm.action, {
+        const staffId = editForm.dataset.id;
+
+        if (!staffId) {
+            alert("Error: Unable to find the staff ID.");
+            return;
+        }
+
+        // Create an object from form data
+        const formData = Object.fromEntries(new FormData(editForm));
+
+        fetch(`/staff/${staffId}`, {
             method: 'PUT',
             headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
             },
-            body: formData
+            body: JSON.stringify(formData)
         })
-        .then(response => {
+        .then(async response => {
+            const data = await response.json();
             if (!response.ok) {
-                throw new Error('Failed to update staff details');
+                throw new Error(data.message || 'Error updating staff details');
             }
-            return response.json();
+            return data;
         })
         .then(data => {
             alert(data.message || 'Staff updated successfully.');
-            closeEditModal(); // Close the modal
-            location.reload(); // Refresh the page to reflect changes (or update the table dynamically)
+            editModal.classList.add('hidden');
+            location.reload();
         })
         .catch(error => {
-            console.error('Error updating staff details:', error);
-            alert('Failed to update staff details. Please try again.');
+            console.error("Error updating staff details:", error);
+            alert(`Error updating staff details: ${error.message}`);
         });
     });
 });
