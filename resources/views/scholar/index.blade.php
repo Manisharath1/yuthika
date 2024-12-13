@@ -1,6 +1,8 @@
 <x-app-layout>
     <x-navbar />
     <x-scholar-modal />
+    <x-scholar-edit />
+
     <!DOCTYPE html>
     <html lang="en">
         <head>
@@ -115,7 +117,7 @@
                                         @foreach($scholars as $scholar)
                                         <tr>
                                             <td>
-                                                <button class="text-blue-600 hover:text-blue-900">
+                                                <button class="text-blue-600 hover:text-blue-900 edit-scholar-btn" data-id="{{ $scholar->student_id }}" title="Edit Scholar">
                                                     <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                             d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
@@ -224,6 +226,7 @@
         });
     </script>
     <script src="{{ asset('js/scholar-modal.js') }}"></script>
+    <script src="{{ asset('js/scholar-index-edit.js') }}"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
     <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>

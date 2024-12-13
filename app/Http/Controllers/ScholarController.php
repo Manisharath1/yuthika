@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Str;
 
 class ScholarController extends Controller
@@ -27,9 +29,6 @@ class ScholarController extends Controller
 
 
     }
-
-
-
 
     public function create(Request $request)
     {
@@ -129,7 +128,7 @@ class ScholarController extends Controller
                 throw $e;
             }
 
-        } catch (\Illuminate\Validation\ValidationException $e) {
+        } catch (ValidationException $e) {
             Log::error('Validation error:', ['errors' => $e->errors()]);
             return response()->json([
                 'success' => false,
@@ -152,7 +151,7 @@ class ScholarController extends Controller
 
     public function getRoleTwoUsers()
     {
-        $roleTwoUsers = User::where('role', 2)->select('id', 'name')->get();
+        $roleTwoUsers = User::where('role', 3)->select('id', 'name')->get();
         return response()->json($roleTwoUsers);
     }
 
@@ -183,52 +182,100 @@ class ScholarController extends Controller
 
         return response()->json(['success' => false, 'message' => 'Error fetching data.'], 500);
     }
-}
-
-
-   // Method to update student data
-   public function update(Request $request, $id)
-{
-    try {
-        $scholars = students::find($id);
-
-        if (!$scholars) {
-            return response()->json(['success' => false, 'message' => 'Student not found'], 404);
-        }
-
-
-
-        for ($i = 1; $i <= 5; $i++) {
-            $fdfrKey = "Fdfr{$i}";
-            $fexpKey = "Fexp{$i}";
-            $fseucKey = "Fseuc{$i}";
-            $cdfrKey = "Cdfr{$i}";
-            $cexpKey = "Cexp{$i}";
-            $cseucKey = "Cseuc{$i}";
-            $odfrKey = "Odfr{$i}";
-            $oexpKey = "Oexp{$i}";
-            $oseucKey = "Oseuc{$i}";
-
-            $scholars->$fdfrKey = $request->input($fdfrKey);
-            $scholars->$fexpKey = $request->input($fexpKey);
-            $scholars->$fseucKey = $request->input($fseucKey);
-            $scholars->$cdfrKey = $request->input($cdfrKey);
-            $scholars->$cexpKey = $request->input($cexpKey);
-            $scholars->$cseucKey = $request->input($cseucKey);
-            $scholars->$odfrKey = $request->input($odfrKey);
-            $scholars->$oexpKey = $request->input($oexpKey);
-            $scholars->$oseucKey = $request->input($oseucKey);
-        }
-
-        $scholars->save();
-        return response()->json(['success' => true, 'message' => 'Student updated successfully']);
-    } catch (\Exception $e) {
-        // Log the error message for debugging
-        Log::error('Error updating student: ' . $e->getMessage());
-
-        return response()->json(['success' => false, 'message' => 'Error: Unable to update data.'], 500);
     }
-}
+
+    public function edit($id)
+    {
+        $scholars = students::findOrFail($id);
+        return response()->json($scholars);
+    }
+
+    public function update(Request $request, $id)
+    {
+        Log::info('Update Request Data:', $request->all());
+
+        try {
+            $validatedData = $request->validate([
+                'name' => 'required|string|max:255',
+                'type' => 'required|string',  // Removed in:p,o,s restriction
+                'email' => [
+                    'required',
+                    'email',
+                    'max:255',
+                    Rule::unique('students')->ignore($id, 'student_id')  // Ignore current record
+                ],
+                'sex' => 'required|string',  // Removed in:Male,Female,Other restriction
+                'dob' => 'nullable|date',    // Made less restrictive
+                // Optional fields
+                'category' => 'nullable|string|max:255',
+                'designation' => 'nullable|string|max:255',
+                'phone' => 'nullable|string|max:20',
+                'caste' => 'nullable|string|max:255',
+                'perm_address' => 'nullable|string',
+                'res_address' => 'nullable|string',
+                'hostel_joined_on' => 'nullable|date',
+                'hostel_vaccated_on' => 'nullable|date',
+                'caution_money' => 'nullable|string',  // Changed from numeric
+                'funding_agency' => 'nullable|string|max:255',
+                'ILS_ID_no' => 'nullable|string|max:255',
+                'emergency_contact_no' => 'nullable|string|max:20',
+                'student_file_no' => 'nullable|string|max:255',
+                'joining_date' => 'nullable|date',
+                'tenure_upto' => 'nullable|date',
+                'SRF_wef' => 'nullable|date',
+                'document_link' => 'nullable|string',  // Changed from url
+                'no_of_publication' => 'nullable|integer',
+                'no_of_conf_attended' => 'nullable|integer',
+                'per_email' => 'nullable|email|max:255',
+                'fellowship' => 'nullable|string|max:255',
+                // 'pi' => 'nullable|string',  // Changed from pi_id integer
+                // 'coPi' => 'nullable|string',  // Changed from co_pi_id integer
+                'pi_id' => 'nullable|exists:users,id',
+                'co_pi_id' => 'nullable|exists:users,id',
+                'registration_no' => 'nullable|string|max:255',
+                'registration_date' => 'nullable|date',
+                'topic' => 'nullable|string',
+                'extension_date' => 'nullable|date',
+                'submission_date' => 'nullable|date',
+                'award_date' => 'nullable|date',
+                'thesis_availability' => 'nullable|string|max:255',
+                'completion_date' => 'nullable|date',
+                'correspondence' => 'nullable|string',
+            ]);
+
+            if ($request->hasFile('photo')) {
+                $validatedData['photo'] = $request->file('photo')->store('photos', 'public');
+            }
+
+            if ($request->hasFile('document')) {
+                $validatedData['document'] = $request->file('document')->store('documents', 'public');
+            }
+
+            $scholar = students::findOrFail($id);
+            $scholar->update($validatedData);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Student updated successfully.',
+                'data' => $scholar
+            ]);
+
+        } catch (ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            Log::error('Student update error: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Error updating student.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
 
 
 }

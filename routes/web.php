@@ -38,6 +38,7 @@ Route::get('/scholar/personal', [ScholarController::class, 'personal'])->middlew
 Route::middleware(['auth', 'admin'])->group(function () {
     //scholar
     Route::put('/students/{id}', [ScholarController::class, 'update']);
+    Route::get('/students/{id}/edit', [ScholarController::class, 'edit']);
     Route::post('/scholar/index', [ScholarController::class, 'create']);
     Route::get('/students/{id}', [ScholarController::class, 'show']);
 

@@ -140,7 +140,7 @@ public function update(Request $request, $id)
         return response()->json([
             'success' => true,
             'message' => 'Staff updated successfully.',
-            'staff' => $staffs
+            'students' => $staffs
         ]);
 
     } catch (ValidationException $e) {
