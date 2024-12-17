@@ -1,7 +1,6 @@
 
 <x-app-layout>
-    <x-navbar />
-    <x-scholar-modal />
+    <x-navbar /> 
     <!DOCTYPE html>
     <html lang="en">
         <head>

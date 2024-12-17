@@ -95,7 +95,7 @@
                                             <th class="px-6 py-3 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Joining Date</th>
                                             <th class="px-6 py-3 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Tenure Upto</th>
                                             <th class="px-6 py-3 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">SRF W.E.F.</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Document Link</th>
+                                            {{-- <th class="px-6 py-3 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Document Link</th> --}}
                                             <th class="px-6 py-3 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">No. of Publications</th>
                                             <th class="px-6 py-3 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">No. Conf Attended</th>
                                             <th class="px-6 py-3 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Personal Email</th>
@@ -147,7 +147,7 @@
                                             <td class="px-6 py-4 whitespace-nowrap">{{ $scholar->joining_date }}</td>
                                             <td class="px-6 py-4 whitespace-nowrap">{{ $scholar->tenure_upto }}</td>
                                             <td class="px-6 py-4 whitespace-nowrap">{{ $scholar->SRF_wef }}</td>
-                                            <td class="px-6 py-4 whitespace-nowrap"><a href="{{ $scholar->document_link }}" target="_blank">View Document</a></td>
+                                            {{-- <td class="px-6 py-4 whitespace-nowrap"><a href="{{ $scholar->document_link }}" target="_blank">View Document</a></td> --}}
                                             <td class="px-6 py-4 whitespace-nowrap">{{ $scholar->no_of_publication }}</td>
                                             <td class="px-6 py-4 whitespace-nowrap">{{ $scholar->no_of_conf_attended }}</td>
                                             <td class="px-6 py-4 whitespace-nowrap">{{ $scholar->per_email }}</td>
