@@ -91,7 +91,7 @@
                         Manage Pre-PHD
                     </a>
                     <!--  Manage RCB-->
-                    <a href="{{ route('dashboard') }}" class="flex items-center py-2 hover:bg-gray-700 transition-colors">
+                    <a href="{{ route('scholar.RCB') }}" class="flex items-center py-2 hover:bg-gray-700 transition-colors">
                         <img src="{{ asset('icons/progress-report.png') }}"  class="h-6 w-6 mr-3">
                         Manage RCB
                     </a>

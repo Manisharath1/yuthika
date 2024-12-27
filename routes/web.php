@@ -44,6 +44,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/students/{id}', [ScholarController::class, 'show']);
 });
 Route::get('/scholar/pre-PHD', [ScholarController::class, 'prePHD'])->middleware(['auth', 'verified', 'admin'])->name('scholar.pre-PHD');
+Route::get('/scholar/RCB', [ScholarController::class, 'rcb'])->middleware(['auth', 'verified', 'admin'])->name('scholar.RCB');
 Route::get('/get-role-two-users', [ScholarController::class, 'getRoleTwoUsers'])->name('get.role.two.users');
 
 
