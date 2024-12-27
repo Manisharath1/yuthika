@@ -61,7 +61,7 @@ Route::get('/faculty/index', [FacultyController::class, 'index'])->middleware(['
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/faculty/index', [FacultyController::class, 'create']);
 });
-Route::get('/faculty/list', [FacultyController::class, 'getFacultyList']);
+
 
 
 
