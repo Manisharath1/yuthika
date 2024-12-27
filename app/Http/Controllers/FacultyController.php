@@ -161,10 +161,15 @@ class FacultyController extends Controller
         }
     }
 
+    public function getFacultyList()
+    {
+        $faculty = User::where('role_id', 3)
+            ->select('id', 'fac_name')
+            ->orderBy('fac_name ')
+            ->get();
 
-
-
-
+        return response()->json($faculty);
+    }
 }
 // 'fac_name' => 'nullable|string|max:100',
 //     'photo' => 'nullable|string|max:255',

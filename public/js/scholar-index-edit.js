@@ -185,7 +185,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             })
 
-    }
+        }
 
     // Call the function when the page loads
     fetchPIUsers();
@@ -317,7 +317,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // <!-- Add JavaScript for accordion functionality -->
-
     const accordionHeaders = document.querySelectorAll('.accordion-header');
     accordionHeaders.forEach(header => {
         header.addEventListener('click', function() {
@@ -339,4 +338,5 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     });
+    
 });

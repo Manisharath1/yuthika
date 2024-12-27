@@ -162,4 +162,56 @@ document.addEventListener('DOMContentLoaded', function() {
             submitBtn.innerHTML = 'Save Scholar';
         }
     });
+
+    const accordionHeaders = document.querySelectorAll('.accordion-header');
+    accordionHeaders.forEach(header => {
+        header.addEventListener('click', function() {
+            // Toggle current accordion
+            const content = this.nextElementSibling;
+            const icon = this.querySelector('.accordion-icon');
+
+            content.classList.toggle('hidden');
+            icon.classList.toggle('rotate-180');
+
+            // Optional: Close other accordions
+            accordionHeaders.forEach(otherHeader => {
+                if (otherHeader !== header) {
+                    const otherContent = otherHeader.nextElementSibling;
+                    const otherIcon = otherHeader.querySelector('.accordion-icon');
+                    otherContent.classList.add('hidden');
+                    otherIcon.classList.remove('rotate-180');
+                }
+            });
+        });
+    });
+
+    const closeButton = document.getElementById('close-edit-modal');
+    const cancelButton = document.querySelector('.close-modal');
+
+    // Function to close the modal
+    function closeModal() {
+        // Add hidden class to hide the modal
+        modal.classList.add('hidden');
+        // Enable body scroll
+        document.body.style.overflow = 'auto';
+    }
+
+    // Event listeners for close buttons
+    closeButton.addEventListener('click', closeModal);
+    cancelButton.addEventListener('click', closeModal);
+
+    // Close modal when clicking outside the modal content
+    modal.addEventListener('click', (e) => {
+        // Check if the click was on the backdrop (modal background)
+        if (e.target === modal || e.target.classList.contains('backdrop-blur-sm')) {
+            closeModal();
+        }
+    });
+
+    // Close modal on escape key press
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+            closeModal();
+        }
+    });
 });

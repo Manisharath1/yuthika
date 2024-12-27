@@ -37,6 +37,10 @@ class students extends Model
     {
         return $this->belongsTo(User::class, 'co_pi_id');
     }
+    public function faculty()
+    {
+        return $this->belongsTo(User::class, 'pi_id, co_pi_id')->where('role', 3);
+    }
     public function up()
     {
         Schema::table('students', function (Blueprint $table) {

@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
+
 use Str;
 
 class ScholarController extends Controller
@@ -26,8 +27,6 @@ class ScholarController extends Controller
     {
         $scholars = students::with(['pi', 'coPi'])->get();
         return view('scholar.index', compact('scholars'));
-
-
     }
 
     public function create(Request $request)
@@ -168,20 +167,127 @@ class ScholarController extends Controller
     }
 
     public function show($id)
-{
-    try {
-        $scholars = students::find($id);
+    {
+        try {
+            $scholars = students::with('pi')->findOrFail($id);
 
-        if (!$scholars) {
-            return response()->json(['success' => false, 'message' => 'Student not found'], 404);
+            if (!$scholars) {
+                return response()->json(['success' => false, 'message' => 'Student not found'], 404);
+            }
+
+            return response()->json($scholars);
+        } catch (\Exception $e) {
+            Log::error('Error fetching student data: ' . $e->getMessage());
+
+            return response()->json(['success' => false, 'message' => 'Error fetching data.'], 500);
         }
-
-        return response()->json($scholars);
-    } catch (\Exception $e) {
-        Log::error('Error fetching student data: ' . $e->getMessage());
-
-        return response()->json(['success' => false, 'message' => 'Error fetching data.'], 500);
     }
+
+    public function updatePersonal(Request $request, $id)
+    {
+        try {
+            $scholars = students::findOrFail($id);
+
+            // Validate the request
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string|max:255',
+                'pi_id' => 'required',
+
+                // Set 1 Validation
+                'Fdfr1' => 'nullable|numeric|between:0,100',
+                'Fexp1' => 'nullable|numeric|between:0,100',
+                'Fseuc1' => 'nullable|numeric|between:0,100',
+                'Cdfr1' => 'nullable|numeric|between:0,100',
+                'Cexp1' => 'nullable|numeric|between:0,100',
+                'Cseuc1' => 'nullable|numeric|between:0,100',
+                'Odfr1' => 'nullable|numeric|between:0,100',
+                'Oexp1' => 'nullable|numeric|between:0,100',
+                'Oseuc1' => 'nullable|numeric|between:0,100',
+
+                // Set 2 Validation
+                'Fdfr2' => 'nullable|numeric|between:0,100',
+                'Fexp2' => 'nullable|numeric|between:0,100',
+                'Fseuc2' => 'nullable|numeric|between:0,100',
+                'Cdfr2' => 'nullable|numeric|between:0,100',
+                'Cexp2' => 'nullable|numeric|between:0,100',
+                'Cseuc2' => 'nullable|numeric|between:0,100',
+                'Odfr2' => 'nullable|numeric|between:0,100',
+                'Oexp2' => 'nullable|numeric|between:0,100',
+                'Oseuc2' => 'nullable|numeric|between:0,100',
+
+                // Set 3 Validation
+                'Fdfr3' => 'nullable|numeric|between:0,100',
+                'Fexp3' => 'nullable|numeric|between:0,100',
+                'Fseuc3' => 'nullable|numeric|between:0,100',
+                'Cdfr3' => 'nullable|numeric|between:0,100',
+                'Cexp3' => 'nullable|numeric|between:0,100',
+                'Cseuc3' => 'nullable|numeric|between:0,100',
+                'Odfr3' => 'nullable|numeric|between:0,100',
+                'Oexp3' => 'nullable|numeric|between:0,100',
+                'Oseuc3' => 'nullable|numeric|between:0,100',
+
+                // Set 4 Validation
+                'Fdfr4' => 'nullable|numeric|between:0,100',
+                'Fexp4' => 'nullable|numeric|between:0,100',
+                'Fseuc4' => 'nullable|numeric|between:0,100',
+                'Cdfr4' => 'nullable|numeric|between:0,100',
+                'Cexp4' => 'nullable|numeric|between:0,100',
+                'Cseuc4' => 'nullable|numeric|between:0,100',
+                'Odfr4' => 'nullable|numeric|between:0,100',
+                'Oexp4' => 'nullable|numeric|between:0,100',
+                'Oseuc4' => 'nullable|numeric|between:0,100',
+
+                // Set 5 Validation
+                'Fdfr5' => 'nullable|numeric|between:0,100',
+                'Fexp5' => 'nullable|numeric|between:0,100',
+                'Fseuc5' => 'nullable|numeric|between:0,100',
+                'Cdfr5' => 'nullable|numeric|between:0,100',
+                'Cexp5' => 'nullable|numeric|between:0,100',
+                'Cseuc5' => 'nullable|numeric|between:0,100',
+                'Odfr5' => 'nullable|numeric|between:0,100',
+                'Oexp5' => 'nullable|numeric|between:0,100',
+                'Oseuc5' => 'nullable|numeric|between:0,100',
+            ], [
+                // Custom error messages
+                'name.required' => 'Scholar name is required.',
+                'name.max' => 'Scholar name cannot exceed 255 characters.',
+                'pi_id.required' => 'Principal Investigator ID is required.',
+                'pi_id.exists' => 'Selected Principal Investigator does not exist.',
+
+                // Generic messages for all numeric fields
+                '*.numeric' => 'The :attribute must be a number.',
+                '*.between' => 'The :attribute must be between 0 and 100.',
+                '*.required' => 'The :attribute field is required for Set 1.',
+            ]);
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Validation failed',
+                    'errors' => $validator->errors()
+                ], 422);
+            }
+            $scholars = students::with('faculty')->get();
+            $scholars = students::findOrFail($id);
+
+            // Remove _token and _method from request data
+            $data = collect($request->all())
+                ->except(['_token', '_method'])
+                ->toArray();
+
+            $scholars->update($data);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Scholar updated successfully',
+                'data' => $scholars
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to update scholar: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     public function edit($id)

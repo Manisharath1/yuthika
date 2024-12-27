@@ -1,6 +1,7 @@
 
 <x-app-layout>
-    <x-navbar /> 
+    <x-navbar />
+
     <!DOCTYPE html>
     <html lang="en">
         <head>
@@ -119,176 +120,11 @@
             </div>
         </body>
     </html>
+    <x-scholar-personal-edit />
 
-    <div id="editModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto h-full w-full">
-        <div class="relative top-20 mx-auto p-5 border w-3/4 shadow-lg rounded-md bg-white">
-            <div class="mt-3">
-                <h3 class="text-lg leading-6 font-medium text-gray-900">Edit Scholar Details</h3>
-                <form id="editScholarForm" class="mt-4">
-                    @csrf
-                    @method('PUT')
-                    <input type="hidden" id="scholar_id" name="scholar_id">
 
-                    <div class="grid grid-cols-3 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Name</label>
-                            <input type="text" name="name" id="edit_name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">PI</label>
-                            <input type="text" name="pi_id" id="edit_pi_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                        </div>
-                    </div>
-
-                    @for ($i = 1; $i <= 5; $i++)
-                    <div class="mt-4">
-                        <h4 class="text-md font-medium text-gray-700">Set {{ $i }}</h4>
-                        <div class="grid grid-cols-3 gap-4 mt-2">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">FDFR{{ $i }}</label>
-                                <input type="text" name="Fdfr{{ $i }}" id="edit_Fdfr{{ $i }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">FEXP{{ $i }}</label>
-                                <input type="text" name="Fexp{{ $i }}" id="edit_Fexp{{ $i }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">FSEUC{{ $i }}</label>
-                                <input type="text" name="Fseuc{{ $i }}" id="edit_Fseuc{{ $i }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-3 gap-4 mt-2">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">CDFR{{ $i }}</label>
-                                <input type="text" name="Cdfr{{ $i }}" id="edit_Cdfr{{ $i }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">CEXP{{ $i }}</label>
-                                <input type="text" name="Cexp{{ $i }}" id="edit_Cexp{{ $i }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">CSEUC{{ $i }}</label>
-                                <input type="text" name="Cseuc{{ $i }}" id="edit_Cseuc{{ $i }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-3 gap-4 mt-2">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">ODFR{{ $i }}</label>
-                                <input type="text" name="Odfr{{ $i }}" id="edit_Odfr{{ $i }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">OEXP{{ $i }}</label>
-                                <input type="text" name="Oexp{{ $i }}" id="edit_Oexp{{ $i }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">OSEUC{{ $i }}</label>
-                                <input type="text" name="Oseuc{{ $i }}" id="edit_Oseuc{{ $i }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                            </div>
-                        </div>
-                    </div>
-                    @endfor
-                    <div class="mt-6 flex justify-end gap-4">
-                        <button type="button" onclick="closeModal()" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600">Close</button>
-                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Save</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 
     @push('scripts')
-    <script>
-        // Function to open the edit modal and populate form data
-        function openEditModal(studentId) {
-            // Show the modal
-            document.getElementById('editModal').classList.remove('hidden');
-
-            // Fetch student data
-            fetch(`/students/${studentId}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`Error fetching data: ${response.status} ${response.statusText}`);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    // Populate form fields with fetched data
-                    document.getElementById('scholar_id').value = studentId;
-                    document.getElementById('edit_name').value = data.name || '';
-                    document.getElementById('edit_pi_id').value = data.pi_id || '';
-
-                    // Populate other fields for each set
-                    for (let i = 1; i <= 5; i++) {
-                        document.getElementById(`edit_Fdfr${i}`).value = data[`Fdfr${i}`] || '';
-                        document.getElementById(`edit_Fexp${i}`).value = data[`Fexp${i}`] || '';
-                        document.getElementById(`edit_Fseuc${i}`).value = data[`Fseuc${i}`] || '';
-                        document.getElementById(`edit_Cdfr${i}`).value = data[`Cdfr${i}`] || '';
-                        document.getElementById(`edit_Cexp${i}`).value = data[`Cexp${i}`] || '';
-                        document.getElementById(`edit_Cseuc${i}`).value = data[`Cseuc${i}`] || '';
-                        document.getElementById(`edit_Odfr${i}`).value = data[`Odfr${i}`] || '';
-                        document.getElementById(`edit_Oexp${i}`).value = data[`Oexp${i}`] || '';
-                        document.getElementById(`edit_Oseuc${i}`).value = data[`Oseuc${i}`] || '';
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching data:', error);
-                    alert('Error: Unable to fetch student data.');
-                });
-        }
-
-        // Function to close the modal and reset the form
-        function closeModal() {
-            document.getElementById('editModal').classList.add('hidden');
-            const form = document.getElementById('editScholarForm');
-            form.reset(); // Reset form fields
-        }
-
-        // Event listener for form submission
-        document.getElementById('editScholarForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent form default submission
-
-            const studentId = document.getElementById('scholar_id').value;
-            const formData = new FormData(this);
-
-            fetch(`/students/${studentId}`, {
-                method: 'PUT',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                },
-                body: formData
-            })
-            .then(response => {
-                // Check for valid response
-                if (!response.ok) {
-                    return response.text().then(text => { throw new Error(`Error: ${text}`); });
-                }
-
-                // Parse JSON response
-                const contentType = response.headers.get("content-type");
-                if (!contentType || !contentType.includes("application/json")) {
-                    return response.text().then(text => { throw new Error("Invalid JSON response: " + text); });
-                }
-
-                return response.json();
-            })
-            .then(data => {
-                if (data.success) {
-                    alert(data.message); // Show success message
-                    closeModal(); // Close the modal
-                    location.reload(); // Reload the page to update the table
-                } else {
-                    throw new Error(data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error updating data:', error);
-                alert('Error: Unable to update data.');
-            });
-        });
-    </script>
-
     <script>
         $(document).ready(function () {
             const table = $('#scholars-table').DataTable({

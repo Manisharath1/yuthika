@@ -76,5 +76,5 @@ class faculty extends Model
         return $this->belongsTo(User::class, 'user_id'); // 'user_id' is the foreign key
     }
 
-    
+
 }
