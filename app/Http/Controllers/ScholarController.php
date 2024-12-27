@@ -382,6 +382,14 @@ class ScholarController extends Controller
         }
     }
 
-
+    public function prePHD(Request $request){
+        try {
+            $scholars = students::orderBy('name')->paginate(10);
+            return view('scholar.pre-PHD', compact('scholars'));
+        } catch (\Exception $e) {
+            Log::error('Error fetching scholars: ' . $e->getMessage());
+            return back()->with('error', 'Unable to fetch scholar data.');
+        }
+    }
 
 }

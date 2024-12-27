@@ -42,8 +42,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/students/{id}/edit', [ScholarController::class, 'edit']);
     Route::post('/scholar/index', [ScholarController::class, 'create']);
     Route::get('/students/{id}', [ScholarController::class, 'show']);
-
 });
+Route::get('/scholar/pre-PHD', [ScholarController::class, 'prePHD'])->middleware(['auth', 'verified', 'admin'])->name('scholar.pre-PHD');
 Route::get('/get-role-two-users', [ScholarController::class, 'getRoleTwoUsers'])->name('get.role.two.users');
 
 

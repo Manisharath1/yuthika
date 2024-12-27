@@ -86,7 +86,7 @@
                         Manage Scholar Personal Data
                     </a>
                     <!--  Manage Pre-PHD-->
-                    <a href="{{ route('dashboard') }}" class="flex items-center py-2 hover:bg-gray-700 transition-colors">
+                    <a href="{{ route('scholar.pre-PHD') }}" class="flex items-center py-2 hover:bg-gray-700 transition-colors">
                         <img src="{{ asset('icons/certificate_16487651.png') }}"  class="h-6 w-6    mr-3">
                         Manage Pre-PHD
                     </a>
