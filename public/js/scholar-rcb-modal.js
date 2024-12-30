@@ -1,32 +1,24 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Get modal elements with correct IDs
     const editModal = document.getElementById('editModal');
     const editForm = document.getElementById('editScholarForm');
-    const closeModalBtn = document.querySelector('button[onclick="closeModal()"]');
-    const piSelect = document.querySelector('select[name="pi_id"]');
+    const piSelect = document.getElementById('edit_pi_id');
 
-    // Close modal function
-    window.closeModal = function() {
-        if (editModal) {
-            editModal.classList.add('hidden');
-            // Clear validation errors
-            document.querySelectorAll('.text-red-500').forEach(el => el.remove());
-            document.querySelectorAll('.border-red-500').forEach(el => {
-                el.classList.remove('border-red-500');
-            });
-        }
-    };
+    // Initialize accordion functionality
+    document.querySelectorAll('.accordion-header').forEach(header => {
+        header.addEventListener('click', function() {
+            const content = this.nextElementSibling;
+            const icon = this.querySelector('.accordion-icon');
 
-    // Fetch PI Users function
-    async function fetchPIUsers() {
-        try {
-            const response = await fetch('/get-role-two-users');
-            if (!response.ok) {
-                throw new Error('Failed to fetch PI users');
-            }
-            const data = await response.json();
+            content.classList.toggle('hidden');
+            icon.classList.toggle('rotate-180');
+        });
+    });
 
-            if (piSelect) {
+    // Fetch PI users for dropdown
+    function fetchPIUsers() {
+        fetch('/get-role-two-users')
+            .then(response => response.json())
+            .then(data => {
                 piSelect.innerHTML = '<option value="">Select PI</option>';
                 data.forEach(user => {
                     const option = document.createElement('option');
@@ -34,136 +26,162 @@ document.addEventListener('DOMContentLoaded', function () {
                     option.textContent = user.name;
                     piSelect.appendChild(option);
                 });
-            }
-        } catch (error) {
-            console.error('Error fetching PI users:', error);
-        }
-    }
-
-    // Initialize accordion functionality
-    function initializeAccordion() {
-        const accordionHeaders = document.querySelectorAll('.accordion-header');
-        accordionHeaders.forEach(header => {
-            header.addEventListener('click', function() {
-                const content = this.nextElementSibling;
-                const icon = this.querySelector('.accordion-icon');
-
-                if (content && icon) {
-                    content.classList.toggle('hidden');
-                    icon.classList.toggle('rotate-180');
-
-                    // Close other accordions
-                    accordionHeaders.forEach(otherHeader => {
-                        if (otherHeader !== header) {
-                            const otherContent = otherHeader.nextElementSibling;
-                            const otherIcon = otherHeader.querySelector('.accordion-icon');
-                            if (otherContent && otherIcon) {
-                                otherContent.classList.add('hidden');
-                                otherIcon.classList.remove('rotate-180');
-                            }
-                        }
-                    });
-                }
+            })
+            .catch(error => {
+                console.error('Error fetching PI users:', error);
             });
-        });
     }
+
+    // Call the function when the page loads
+    fetchPIUsers();
 
     // Handle form submission
-    if (editForm) {
-        editForm.addEventListener('submit', async function(event) {
-            event.preventDefault();
+    editForm.addEventListener('submit', function(event) {
+        event.preventDefault();
 
-            const studentId = this.getAttribute('data-id');
-            if (!studentId) {
-                console.error("Missing student ID");
-                return;
-            }
+        const studentId = document.getElementById('scholar_id').value;
+        if (!studentId) {
+            console.error("Missing student ID");
+            return;
+        }
 
-            const formData = new FormData(this);
-            formData.append('_method', 'PUT');
+        const formData = new FormData(editForm);
 
-            try {
-                const response = await fetch(`/students/${studentId}`, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                        'Accept': 'application/json'
-                    },
-                    body: formData
-                });
+        // Log form data for debugging
+        console.log('Form Data:');
+        for (let pair of formData.entries()) {
+            console.log(pair[0] + ': ' + pair[1]);
+        }
 
-                const responseData = await response.json();
+        fetch(`/students/${studentId}`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Accept': 'application/json'
+            },
+            body: formData
+        })
+        .then(async response => {
+            const responseData = await response.json();
+            console.log('Server Response:', responseData);
 
-                if (!response.ok) {
-                    if (response.status === 422) {
-                        // Handle validation errors
-                        Object.keys(responseData.errors).forEach(field => {
-                            const input = document.getElementById(`edit_${field}`);
-                            if (input) {
-                                input.classList.add('border-red-500');
-                                const errorDiv = document.createElement('div');
-                                errorDiv.className = 'text-red-500 text-sm mt-1';
-                                errorDiv.textContent = responseData.errors[field].join(', ');
-                                input.parentNode.appendChild(errorDiv);
-                            }
-                        });
-                        throw new Error('Validation failed');
-                    }
-                    throw new Error(responseData.message || 'Server error');
+            if (!response.ok) {
+                if (response.status === 422) {
+                    console.error('Validation Errors:', responseData.errors);
+                    // Clear previous errors
+                    clearValidationErrors();
+                    // Display new validation errors
+                    displayValidationErrors(responseData.errors);
+                    throw new Error('Validation failed');
                 }
-
-                alert('Scholar updated successfully');
+                throw new Error(responseData.message || 'Server error');
+            }
+            return responseData;
+        })
+        .then(data => {
+            console.log('Success:', data);
+            if (data.success) {
+                showAlert('Student updated successfully', 'success');
                 closeModal();
                 window.location.reload();
-
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Error updating scholar: ' + error.message);
+            } else {
+                showAlert(data.message || 'Error updating student', 'error');
             }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showAlert('Error updating student: ' + error.message, 'error');
         });
-    }
+    });
 
-    // Initialize edit buttons
-    function initializeEditButtons() {
-        document.querySelectorAll('.edit-scholar-btn').forEach(button => {
-            button.addEventListener('click', async function() {
-                const studentId = this.dataset.id;
-                if (!studentId) return;
+    // Edit button click handler
+    document.querySelectorAll('.edit-scholar-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const studentId = this.dataset.id;
+            console.log('Opening edit modal for student:', studentId);
 
-                try {
-                    await fetchPIUsers();
-                    const response = await fetch(`/students/${studentId}/edit`);
-                    const data = await response.json();
+            // Clear previous form data and errors
+            clearValidationErrors();
+            editForm.reset();
 
-                    if (piSelect) piSelect.value = data.pi_id || '';
-
-                    // Clear previous errors
-                    document.querySelectorAll('.text-red-500').forEach(el => el.remove());
-                    document.querySelectorAll('.border-red-500').forEach(el => {
-                        el.classList.remove('border-red-500');
-                    });
+            fetch(`/students/${studentId}/edit`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Fetched student data:', data);
+                    document.getElementById('scholar_id').value = studentId;
 
                     // Populate form fields
                     Object.entries(data).forEach(([key, value]) => {
                         const input = document.getElementById(`edit_${key}`);
-                        if (input && input.type !== 'file') {
-                            input.value = value || '';
+                        if (input) {
+                            if (key === 'joining_date' || key === 'date_of_registration') {
+                                // Format date to YYYY-MM-DD for input[type="date"]
+                                if (value) {
+                                    input.value = value.split('T')[0];
+                                }
+                            } else {
+                                input.value = value || '';
+                            }
                         }
                     });
 
-                    if (editForm) editForm.setAttribute('data-id', studentId);
-                    if (editModal) editModal.classList.remove('hidden');
+                    // Set PI value
+                    if (data.pi_id) {
+                        piSelect.value = data.pi_id;
+                    }
 
-                } catch (error) {
-                    console.error('Error fetching scholar data:', error);
-                    alert('Error loading scholar data');
-                }
-            });
+                    // Show first accordion section by default
+                    const firstAccordion = document.querySelector('.accordion-content');
+                    const firstAccordionIcon = document.querySelector('.accordion-icon');
+                    if (firstAccordion && firstAccordionIcon) {
+                        firstAccordion.classList.remove('hidden');
+                        firstAccordionIcon.classList.add('rotate-180');
+                    }
+
+                    // Show modal
+                    editModal.classList.remove('hidden');
+                })
+                .catch(error => {
+                    console.error('Error fetching student data:', error);
+                    showAlert('Error loading student data: ' + error.message, 'error');
+                });
+        });
+    });
+
+    // Helper functions
+    function clearValidationErrors() {
+        document.querySelectorAll('.error-message').forEach(el => el.remove());
+        document.querySelectorAll('.border-red-500').forEach(el => {
+            el.classList.remove('border-red-500');
         });
     }
 
-    // Initialize all components
-    fetchPIUsers();
-    initializeAccordion();
-    initializeEditButtons();
+    function displayValidationErrors(errors) {
+        Object.entries(errors).forEach(([field, messages]) => {
+            const input = document.getElementById(`edit_${field}`);
+            if (input) {
+                input.classList.add('border-red-500');
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'error-message text-red-500 text-sm mt-1';
+                errorDiv.textContent = messages.join(', ');
+                input.parentNode.appendChild(errorDiv);
+            }
+        });
+    }
+
+    function showAlert(message, type) {
+        alert(message);
+    }
+
+    // Close modal function (referenced in HTML)
+    window.closeModal = function() {
+        editModal.classList.add('hidden');
+        clearValidationErrors();
+        editForm.reset();
+    };
 });

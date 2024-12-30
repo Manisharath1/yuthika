@@ -105,11 +105,11 @@
                                     <label class="block text-sm font-bold text-blue-700">F1A </label>
                                     <input type="text" name="f1a_reg_form" id="edit_f1a_reg_form" class="mt-1 block w-full border-blue-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
                                 </div>
-                                @foreach(['student_info', 'cert_of_reg', 'course_work', 'grade_statement', 'std_adv_committee',
-                                        'academic_transcript', 'research_proposal', 'progress_report', 'phd_synopsis', 'reco_of_SAC',
-                                        'examiners_panel', 'thesis_title_page', 'student_declaration', 'originality_cert',
-                                        'plagiarism_cert', 'thesis_submission', 'inv_letter_ext_examiner', 'lett_to_EE_conf_rept_format',
-                                        'eval_remun_form', 'let_to_head_with_eval_repts', 'vivavoce_joint_rept', 'appl_for_degree'] as $index => $field)
+                                @foreach(['f1_student_info', 'f2_cert_of_reg', 'f3_course_work', 'f4_grade_statement', 'f5_std_adv_committee',
+                                'f6_academic_transcript', 'f7_research_proposal', 'f8_progress_report', 'f9_phd_synopsis', 'f10_reco_of_SAC',
+                                'f11_examiners_panel', 'f12_thesis_title_page', 'f13_student_declaration', 'f14_originality_cert',
+                                'f15_plagiarism_cert', 'f16_thesis_submission', 'f17_inv_letter_ext_examiner', 'f18_lett_to_EE_conf_rept_format',
+                                'f19_eval_remun_form', 'f20_let_to_head_with_eval_repts', 'f21_vivavoce_joint_rept', 'f23_appl_for_degree'] as $index => $field)
                                     <div>
                                         <label class="block text-sm font-bold text-blue-700">F{{ $index + 1 }}</label>
                                         <input type="text" name="{{ $field }}" id="edit_{{ $field }}"

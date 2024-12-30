@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ScholarController;
 use App\Http\Controllers\StaffController;
 use Illuminate\Support\Facades\Route;
@@ -38,6 +39,8 @@ Route::get('/scholar/personal', [ScholarController::class, 'personal'])->middlew
 Route::middleware(['auth', 'admin'])->group(function () {
     //scholar
     Route::put('/students/{id}', [ScholarController::class, 'update']);
+    Route::put('/students/{id}', [ScholarController::class, 'updatePhd']);
+    Route::put('/students/{id}', [ScholarController::class, 'updateRcb']);
     Route::put('/students/{id}', [ScholarController::class, 'updatePersonal']);
     Route::get('/students/{id}/edit', [ScholarController::class, 'edit']);
     Route::post('/scholar/index', [ScholarController::class, 'create']);
@@ -62,6 +65,9 @@ Route::get('/faculty/index', [FacultyController::class, 'index'])->middleware(['
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/faculty/index', [FacultyController::class, 'create']);
 });
+
+// project
+Route::get('/project/index', [ProjectController::class, 'index'])->middleware(['auth', 'verified', 'admin'])->name('project.index');
 
 
 

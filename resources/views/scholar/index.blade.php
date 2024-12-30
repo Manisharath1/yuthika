@@ -78,6 +78,9 @@
                                             <th class="px-6 py-3 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Designation</th>
                                             <th class="px-6 py-3 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">PI</th>
                                             <th class="px-6 py-3 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">CO PI</th>
+                                            {{-- <th class="px-6 py-3 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Project Name</th> --}}
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Project Name</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Project Completion Date</th>
                                             <th class="px-6 py-3 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Email</th>
                                             <th class="px-6 py-3 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Phone</th>
                                             <th class="px-6 py-3 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Sex</th>
@@ -107,7 +110,6 @@
                                             <th class="px-6 py-3 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Submission Date</th>
                                             <th class="px-6 py-3 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Award Date</th>
                                             <th class="px-6 py-3 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Thesis Availability</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Date of Completion</th>
                                             <th class="px-6 py-3 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Photo</th>
                                             <th class="px-6 py-3 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Correspondence</th>
                                             <th class="px-6 py-3 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">Document</th>
@@ -130,6 +132,9 @@
                                             <td class="px-6 py-4 whitespace-nowrap">{{ $scholar->designation }}</td>
                                             <td class="px-6 py-4 whitespace-nowrap">{{ $scholar->pi ? $scholar->pi->name : 'N/A' }}</td>
                                             <td class="px-6 py-4 whitespace-nowrap">{{ $scholar->coPi ? $scholar->coPi->name : 'N/A' }}</td>
+                                            {{-- <td class="px-6 py-4 whitespace-nowrap">{{ $scholar->project_name }}</td> --}}
+                                            <td class="px-6 py-4 whitespace-nowrap">{{ $scholar->project_id }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">{{ $scholar->completion_date }}</td>
                                             <td class="px-6 py-4 whitespace-nowrap">{{ $scholar->email }}</td>
                                             <td class="px-6 py-4 whitespace-nowrap">{{ $scholar->phone }}</td>
                                             <td class="px-6 py-4 whitespace-nowrap">{{ $scholar->sex }}</td>
@@ -159,7 +164,6 @@
                                             <td class="px-6 py-4 whitespace-nowrap">{{ $scholar->submission_date }}</td>
                                             <td class="px-6 py-4 whitespace-nowrap">{{ $scholar->award_date }}</td>
                                             <td class="px-6 py-4 whitespace-nowrap">{{ $scholar->thesis_availability }}</td>
-                                            <td class="px-6 py-4 whitespace-nowrap">{{ $scholar->completion_date }}</td>
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <img src="{{ $scholar->photo }}" alt="Photo" class="h-10 w-10 rounded-full">
                                             </td>

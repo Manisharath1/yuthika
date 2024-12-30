@@ -85,6 +85,8 @@ class students extends Model
         'fellowship',
         'pi_id',
         'co_pi_id',
+        // 'project_name',
+        'project_id',
         'registration_no',
         'registration_date',
         'topic',
@@ -189,6 +191,7 @@ class students extends Model
         'lab_manage_flag',
         'data_compiler',
         'cab_report_flag',
+
     ];
 
 

@@ -65,6 +65,8 @@ class ScholarController extends Controller
                 'fellowship' => 'nullable|string|max:255',
                 'pi_id' => 'nullable|integer', // Changed to integer
                 'co_pi_id' => 'nullable|integer',
+                'project_id' => 'nullable|integer',
+                // 'project_name' => 'string|max:255',
                 'registration_no' => 'nullable|string|max:255',
                 'registration_date' => 'nullable|date',
                 'topic' => 'nullable|string',
@@ -402,6 +404,146 @@ class ScholarController extends Controller
         }
     }
 
+    // updatePhd
+    public function updatePhd(Request $request, $id)
+    {
+        Log::info('Update Request Data:', $request->all());
+        try {
+            $scholar = students::findOrFail($id);
+            Log::info('Found scholar:', $scholar->toArray());
+
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'pi_id' => 'required|exists:users,id',
+                'year' => 'required|string|max:4',
+                'mark401' => 'nullable|numeric|min:0|max:100',
+                'mark402' => 'nullable|numeric|min:0|max:100',
+                'mark403' => 'nullable|numeric|min:0|max:100',
+                'mark404' => 'nullable|numeric|min:0|max:100',
+                'cgpa' => 'nullable|numeric|min:0|max:10',
+                'attendance' => 'nullable|numeric|min:0|max:100'
+            ]);
+
+            Log::info('Validated data:', $validated);
+
+            $scholar->update($validated);
+            Log::info('Scholar after update:', $scholar->fresh()->toArray());
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Student updated successfully',
+                'data' => $scholar
+            ]);
+        } catch (ValidationException $e) {
+            Log::error('Validation failed:', [
+                'errors' => $e->errors(),
+                'request_data' => $request->all()
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            Log::error('Student update error: ' . $e->getMessage(), [
+                'request_data' => $request->all(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return response()->json([
+                'success' => false,
+                'message' => 'Error updating student',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    //update rcb
+    public function updateRcb(Request $request, $id)
+    {
+        Log::info('Update RCB Request Data:', $request->all());
+
+        try {
+            $scholars = students::findOrFail($id);
+            Log::info('Found scholar:', $scholars->toArray());
+
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'pi_id' => 'required|exists:users,id',
+                'joining_date' => 'required|date',
+                'registration_no' => [
+                    'required',
+                    'string',
+                    'max:255',
+                    Rule::unique('students')->ignore($scholars->id)
+                ],
+                'date_of_registration' => 'required|date',
+                'academic_year' => 'required|string|max:20',
+                'topic' => 'required|string|max:500',
+                'co_guide' => 'nullable|string|max:255',
+                'external_expert' => 'nullable|string|max:255',
+                'internal_expert' => 'nullable|string|max:255',
+                'additional_member' => 'nullable|string|max:255',
+
+                // Form validation rules
+                'f1a_reg_form' => 'nullable|string|max:50',
+                'student_info' => 'nullable|string|max:50',
+                'cert_of_reg' => 'nullable|string|max:50',
+                'course_work' => 'nullable|string|max:50',
+                'grade_statement' => 'nullable|string|max:50',
+                'std_adv_committee' => 'nullable|string|max:50',
+                'academic_transcript' => 'nullable|string|max:50',
+                'research_proposal' => 'nullable|string|max:50',
+                'progress_report' => 'nullable|string|max:50',
+                'phd_synopsis' => 'nullable|string|max:50',
+                'reco_of_SAC' => 'nullable|string|max:50',
+                'examiners_panel' => 'nullable|string|max:50',
+                'thesis_title_page' => 'nullable|string|max:50',
+                'student_declaration' => 'nullable|string|max:50',
+                'originality_cert' => 'nullable|string|max:50',
+                'plagiarism_cert' => 'nullable|string|max:50',
+                'thesis_submission' => 'nullable|string|max:50',
+                'inv_letter_ext_examiner' => 'nullable|string|max:50',
+                'lett_to_EE_conf_rept_format' => 'nullable|string|max:50',
+                'eval_remun_form' => 'nullable|string|max:50',
+                'let_to_head_with_eval_repts' => 'nullable|string|max:50',
+                'vivavoce_joint_rept' => 'nullable|string|max:50',
+                'appl_for_degree' => 'nullable|string|max:50'
+            ]);
+
+            Log::info('Validated data:', $validated);
+            $scholars->update($validated);
+            Log::info('Scholar after update:', $scholars->fresh()->toArray());
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Scholar details updated successfully',
+                'data' => $scholars->fresh()->load('pi')
+            ]);
+
+        } catch (ValidationException $e) {
+            Log::error('Validation failed:', [
+                'errors' => $e->errors(),
+                'request_data' => $request->all()
+            ]);
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors' => $e->errors()
+            ], 422);
+
+        } catch (\Exception $e) {
+            Log::error('Scholar update error: ' . $e->getMessage(), [
+                'request_data' => $request->all(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return response()->json([
+                'success' => false,
+                'message' => 'Error updating scholar',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
 
 
 }

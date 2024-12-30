@@ -121,13 +121,13 @@
                             <div class="accordion-content p-4 hidden">
 
                                 <div class="grid grid-cols-3 gap-4">
-                                    <div class="mt-4">
+                                    {{-- <div class="mt-4">
                                         <label for="project_name" class="block text-sm font-bold text-blue-700">Project Name</label>
                                         <input type="text" id="project_name" name="project_name" class="mt-1 block w-full border-blue-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                                    </div>
+                                    </div> --}}
 
                                     <div class="mt-4">
-                                        <label for="project_id" class="block text-sm font-bold text-blue-700">Project ID</label>
+                                        <label for="project_id" class="block text-sm font-bold text-blue-700">Project Name</label>
                                         <input type="text" id="project_id" name="project_id" class="mt-1 block w-full border-blue-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
                                     </div>
 

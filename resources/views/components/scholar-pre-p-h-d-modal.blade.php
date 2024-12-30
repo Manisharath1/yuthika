@@ -41,22 +41,22 @@
                             </div>
                             <div class="mt-4">
                                 <label for="edit_401" class="block text-sm font-bold text-blue-700">401</label>
-                                <input type="text" id="edit_401" name="401" class="mt-1 block w-full border-blue-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                <input type="text" id="edit_401" name="mark401" class="mt-1 block w-full border-blue-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
                             </div>
                             <div class="mt-4">
                                 <label for="edit_402" class="block text-sm font-bold text-blue-700">402</label>
-                                <input type="text" id="edit_402" name="402" class="mt-1 block w-full border-blue-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                <input type="text" id="edit_402" name="mark402" class="mt-1 block w-full border-blue-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
                             </div>
                         </div>
 
                         <div class="grid grid-cols-3 gap-4">
                             <div class="mt-4">
                                 <label for="edit_403" class="block text-sm font-bold text-blue-700">403</label>
-                                <input type="text" id="edit_403" name="403" class="mt-1 block w-full border-blue-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                <input type="text" id="edit_403" name="mark403" class="mt-1 block w-full border-blue-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
                             </div>
                             <div class="mt-4">
                                 <label for="edit_404" class="block text-sm font-bold text-blue-700">404</label>
-                                <input type="text" id="edit_404" name="404" class="mt-1 block w-full border-blue-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                <input type="text" id="edit_404" name="mark404" class="mt-1 block w-full border-blue-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
                             </div>
                             <div class="mt-4">
                                 <label for="edit_cgpa" class="block text-sm font-bold text-blue-700">Cgpa</label>

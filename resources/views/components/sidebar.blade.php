@@ -128,7 +128,7 @@
             </div>
 
                 <!-- Manage Projects -->
-                <a href="{{ route('dashboard') }}" class="flex items-center p-4 text-white hover:bg-gray-700 transition-colors">
+                <a href="{{ route('project.index') }}" class="flex items-center p-4 text-white hover:bg-gray-700 transition-colors">
                     <img src="{{ asset('icons/work-from-home.png') }}"  class="h-6 w-6">
                     <span class="ml-4">Manage Projects</span>
                 </a>
