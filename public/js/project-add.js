@@ -18,7 +18,7 @@ $(document).ready(function() {
         e.stopPropagation();
     });
 
-  
+
     // Handle form submission
     $('#add-project-form').submit(function(e) {
         e.preventDefault();

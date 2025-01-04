@@ -1,7 +1,8 @@
 <x-app-layout>
     <x-navbar />
     <x-project-modal />
-    <x-project-add  :users="$users" />
+    <x-project-add :users="$users" />
+    {{-- <x-project-add :users="$users" /> --}}
     <!DOCTYPE html>
     <html lang="en">
         <head>

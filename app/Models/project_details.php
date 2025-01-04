@@ -30,7 +30,6 @@ class project_details extends Model
         {
             return $this->belongsTo(User::class, 'pi2_id')->where('role', 3);
         }
-        
 
         // Define fillable fields for mass assignment
         protected $fillable = [

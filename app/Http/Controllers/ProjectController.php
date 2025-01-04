@@ -20,6 +20,7 @@ class ProjectController extends Controller
             });
 
         $users = User::where('role', 3)->get(); // Get all PIs
+        Log::info('Users count: ' . $users->count());
 
         return view('project.index', compact('projects', 'users'));
     }
