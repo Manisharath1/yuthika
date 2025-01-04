@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class project extends Component
+class ProjectEdit extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +21,6 @@ class project extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.project');
+        return view('components.project-add');
     }
 }

@@ -66,8 +66,16 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/faculty/index', [FacultyController::class, 'create']);
 });
 
-// project
-Route::get('/project/index', [ProjectController::class, 'index'])->middleware(['auth', 'verified', 'admin'])->name('project.index');
+// Project routes with auth middleware
+Route::middleware(['auth', 'verified', 'admin'])->group(function () {
+    Route::get('/project/index', [ProjectController::class, 'index'])->name('project.index');
+    Route::prefix('project')->group(function () {
+        Route::post('/store', [ProjectController::class, 'store'])->name('project.store');
+        Route::get('/{id}', [ProjectController::class, 'show'])->name('project.show');
+        Route::put('/{id}', [ProjectController::class, 'update'])->name('project.update');
+    });
+});
+
 
 
 

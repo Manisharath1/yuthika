@@ -21,6 +21,17 @@ class project_details extends Model
         // Disable timestamps as the table doesn't have created_at and updated_at fields
         public $timestamps = false;
 
+        public function principalInvestigator()
+        {
+            return $this->belongsTo(User::class, 'pi_id')->where('role', 3);
+        }
+
+        public function coInvestigator()
+        {
+            return $this->belongsTo(User::class, 'pi2_id')->where('role', 3);
+        }
+        
+
         // Define fillable fields for mass assignment
         protected $fillable = [
             'pid',
